@@ -1,0 +1,28 @@
+name: 次日菜谱推送（静态365天·每晚20:00）
+
+on:
+  schedule:
+    # 北京时间 20:00 = UTC 12:00
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+
+jobs:
+  send-meal-plan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 拉取代码（含 meals_365.json）
+        uses: actions/checkout@v4
+
+      - name: 配置 Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装依赖
+        run: pip install requests
+
+      - name: 发送次日菜谱至飞书
+        env:
+          FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
+        run: python send_meal.py
