@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 一次性生成365天菜谱并保存为 meals_365.json
 运行一次即可，之后 send_meal.py 直接读取该文件
@@ -11,8 +9,7 @@
 import os
 import json
 import time
-
-import google.generativeai as genai
+import google.generativeai as genai  # 确保这一行在最前面
 
 # 获取 Gemini API Key
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
