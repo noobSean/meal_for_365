@@ -15,9 +15,6 @@ import google.generativeai as genai  # 确保这一行在最前面
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 OUTPUT_FILE = "meals_365.json"
 BATCH_SIZE = 10   # 每次生成10天
-
-import requests
-
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 OUTPUT_FILE = "meals_365.json"
 BATCH_SIZE = 10   # 每次生成10天，共36批+1批（365天）
@@ -73,10 +70,28 @@ def generate_batch(start_day: int, used_names: list[str]) -> list[dict] | None:
     try:
         # 使用 Gemini 模型，配置为强制输出 JSON 格式
         model = genai.GenerativeModel(
-            model_name='models/gemini-1.5-flash', # 推荐使用 1.5 Pro 获取最佳的遵循指令能力和逻辑推理
+            model_name='gemini-1.5-flash',  
             generation_config={"response_mime_type": "application/json"}
         )
         
+    # --- 强力诊断与自动适配 ---
+        available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
+        print(f"你的 API Key 可用的模型列表: {available_models}")
+    
+        # 自动检查哪个名字能用
+        target_model = ""
+        for name in ['models/gemini-1.5-flash', 'gemini-1.5-flash', 'models/gemini-1.5-flash-latest']:
+            if any(name in m_full for m_full in available_models):
+                target_model = name
+                break
+                
+        if not target_model:
+            print("❌ 在你的可用模型列表中没找到 gemini-1.5-flash，请检查 API Key 权限")
+            return
+        else:
+            print(f"✅ 将使用模型: {target_model}")
+    # ---------------------------
+
         response = model.generate_content(prompt)
         raw = response.text.strip()
         
@@ -95,10 +110,7 @@ def main():
         return
         
     # 初始化 Gemini 配置
-    genai.configure(
-        api_key=GEMINI_API_KEY,
-        client_options={'api_version': 'v1'} 
-    )
+    genai.configure(api_key=GEMINI_API_KEY)
 
     all_meals: list[dict] = []
     used_names: list[str] = []
