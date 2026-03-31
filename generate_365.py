@@ -70,24 +70,6 @@ def generate_batch(start_day: int, used_names: list[str]) -> list[dict] | None:
             model_name='gemini-2.0-flash-lite',  
             generation_config={"response_mime_type": "application/json"}
         )
-        
-    # --- 强力诊断与自动适配 ---
-        available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
-        print(f"你的 API Key 可用的模型列表: {available_models}")
-    
-        # 自动检查哪个名字能用
-        target_model = ""
-        for name in ['models/gemini-1.5-flash', 'gemini-1.5-flash', 'models/gemini-1.5-flash-latest']:
-            if any(name in m_full for m_full in available_models):
-                target_model = name
-                break
-                
-        if not target_model:
-            print("❌ 在你的可用模型列表中没找到 gemini-1.5-flash，请检查 API Key 权限")
-            return
-        else:
-            print(f"✅ 将使用模型: {target_model}")
-    # ---------------------------
 
         response = model.generate_content(prompt)
         raw = response.text.strip()
