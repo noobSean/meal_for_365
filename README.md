@@ -1,6 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # meal_for_365
 =======
+=======
+>>>>>>> edd60ab807d6906b8bf6147f1b5ffe263b86463f
 # 🍽️ 混合痔康复饮食 · 365天静态菜谱推送
 
 > 飞书 Webhook · 每晚 20:00 推送次日菜谱 · 完全本地运行 · 无需任何 AI API
@@ -104,4 +107,7 @@ pip install requests
 export FEISHU_WEBHOOK="https://open.feishu.cn/open-apis/bot/v2/hook/xxx"
 python send_meal.py
 ```
+<<<<<<< HEAD
 >>>>>>> edd60ab (Initial commit)
+=======
+>>>>>>> edd60ab807d6906b8bf6147f1b5ffe263b86463f
