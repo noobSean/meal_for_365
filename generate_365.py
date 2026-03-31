@@ -15,9 +15,6 @@ import google.generativeai as genai  # 确保这一行在最前面
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 OUTPUT_FILE = "meals_365.json"
 BATCH_SIZE = 10   # 每次生成10天
-ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
-OUTPUT_FILE = "meals_365.json"
-BATCH_SIZE = 10   # 每次生成10天，共36批+1批（365天）
 
 
 # ─── 季节提示 ──────────────────────────────────────────────
@@ -70,7 +67,7 @@ def generate_batch(start_day: int, used_names: list[str]) -> list[dict] | None:
     try:
         # 使用 Gemini 模型，配置为强制输出 JSON 格式
         model = genai.GenerativeModel(
-            model_name='gemini-1.5-flash',  
+            model_name='gemini-2.0-flash-lite',  
             generation_config={"response_mime_type": "application/json"}
         )
         
