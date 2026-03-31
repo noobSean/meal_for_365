@@ -76,7 +76,7 @@ def generate_batch(start_day: int, used_names: list[str]) -> list[dict] | None:
     try:
         # 使用 Gemini 模型，配置为强制输出 JSON 格式
         model = genai.GenerativeModel(
-            'gemini-1.5-flash', # 推荐使用 1.5 Pro 获取最佳的遵循指令能力和逻辑推理
+            'models/gemini-1.5-flash', # 推荐使用 1.5 Pro 获取最佳的遵循指令能力和逻辑推理
             generation_config={"response_mime_type": "application/json"}
         )
         
